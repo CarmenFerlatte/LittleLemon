@@ -9,13 +9,13 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from .models import MenuItem, Booking
 from .serializers import MenuItemSerializer, BookingSerializer, UserSerializer
-# from django.conf import settings
-
-
 
 # Create your views here.
 def index(request):
     return render(request, 'index.html', {})
+
+
+
 
 class MenuItemView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]

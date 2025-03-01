@@ -9,7 +9,7 @@ class Menu(models.Model):
 
     def __str__(self):
         # return self.title
-        return f"{self.title} - {self.price:.2f}"
+        return f"{self.title} - {self.price}"
 
 class MenuItem(models.Model):
     name = models.CharField(max_length=255)
@@ -19,7 +19,7 @@ class MenuItem(models.Model):
 
     def __str__(self):
         # return self.name
-        return f"{self.name} - {self.price:.2f}"
+        return f"{self.name} - {self.price}"
 
 class Booking(models.Model):
     name = models.CharField(max_length=255)

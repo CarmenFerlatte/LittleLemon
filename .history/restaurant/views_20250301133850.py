@@ -9,9 +9,29 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from .models import MenuItem, Booking
 from .serializers import MenuItemSerializer, BookingSerializer, UserSerializer
-# from django.conf import settings
 
+#pour faire des tests
+from django.test import TestCase, override_settings
+from django.urls import reverse
+from restaurant.models import Menu
+from restaurant.serializers import MenuSerializer
+from rest_framework import status
+from rest_framework.test import APIClient
 
+@override_settings(REST_FRAMEWORK={'DEFAULT_PERMISSION_CLASSES': []})
+class MenuViewTest(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.menu1 = Menu.objects.create(title="Menu 1", price=10.00, inventory=100)
+        self.menu2 = Menu.objects.create(title="Menu 2", price=20.00, inventory=200)
+
+    def test_getall(self):
+        response = self.client.get(reverse('menu-list'))
+        menus = Menu.objects.all()
+        serializer = MenuSerializer(menus, many=True)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, serializer.data)
+# fin des tests
 
 # Create your views here.
 def index(request):

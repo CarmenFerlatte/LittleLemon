@@ -9,10 +9,31 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from .models import MenuItem, Booking
 from .serializers import MenuItemSerializer, BookingSerializer, UserSerializer
-# from django.conf import settings
 
+#pour faire des tests
+from django.test import TestCase, override_settings
+from django.urls import reverse
+from restaurant.models import MenuItem
+from restaurant.serializers import MenuItemSerializer
+from rest_framework import status
+from rest_framework.test import APIClient
 
+@override_settings(REST_FRAMEWORK={'DEFAULT_PERMISSION_CLASSES': []})
+class MenuViewTest(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.menu1 = MenuItem.objects.create(name="Menu 1", description="Description 1", price=10.00, inventory=100)
+        self.menu2 = MenuItem.objects.create(name="Menu 2", description="Description 2", price=20.00, inventory=200)
 
+    def test_getall(self):
+        response = self.client.get(reverse('menu-list'))
+        menus = MenuItem.objects.all()
+        serializer = MenuItemSerializer(menus, many=True)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, serializer.data)
+# fin des tests
+
+# Create your views here.
 # Create your views here.
 def index(request):
     return render(request, 'index.html', {})
@@ -38,6 +59,5 @@ class UserViewSet(viewsets.ModelViewSet):
 
 @api_view()  
 @permission_classes([IsAuthenticated])
-#@authentification_classes([TokenAuthentication])
 def msg(request):
-    return Response({"message": "Cette vue est protégée par un token d'authentification."}) 
+    return Response({"message": "Cette vue est protégée par un token d'authentification."})

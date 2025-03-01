@@ -145,8 +145,3 @@ REST_FRAMEWORK = {
 
 DJOSER={"USER_ID_FIELD":"username"}
 
-# variable TESTING
-
-# import sys
-
-# TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
