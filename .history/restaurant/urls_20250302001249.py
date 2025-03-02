@@ -1,6 +1,8 @@
+#define URL route for index() view
 from django.urls import path
-from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework import routers
 from . import views
+from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -8,8 +10,6 @@ urlpatterns = [
     path('menu/<int:pk>', views.SingleMenuView.as_view(), name='single-menu'),
     path('menu/menuitem/', views.MenuItemView.as_view(), name='menuitem-list-create'),
     path('menu/menuitem/<int:pk>', views.SingleMenuItemView.as_view(), name='single-menuitem'),
-    path('booking/', views.BookingListCreateView.as_view(), name='booking-list-create'),
-    path('booking/<int:pk>', views.SingleBookingView.as_view(), name='single-booking'),
     path('message/', views.msg),
     path('api-token-auth/', obtain_auth_token),
 ]
